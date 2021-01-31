@@ -101,3 +101,5 @@ void FindMine(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 		DisplayBoard(mine, row, col);
 	}
 }
+
+//递归调用使不是雷的地方全部展开
