@@ -62,6 +62,28 @@ int get_mine_count(char mine[ROWS][COLS], int x, int y)
 		mine[x - 1][y + 1] - 8 * '0';
 }
 
+void JudgeAround(char mine[ROWS][COLS],char show[ROWS][COLS],int x,int y)
+{
+	int i = 0;
+	int j = 0;
+	for (i = x - 1; i <= x + 1; i++)
+	{
+		for (j = y - 1; j <= y + 1; j++)
+		{
+			if (show[i][j] != ' '&&i != 0 && i != ROWS - 1 && y != 0 && y != COLS - 1)
+			{
+				int count=get_mine_count(mine, i, j);
+				show[i][j] = count + '0';
+				if (show[i][j] == '0')
+				{
+					show[i][j] = ' ';
+					JudgeAround(mine,show, i, j);
+				}
+			}
+		}
+	}
+}
+
 void FindMine(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 {
 	int x = 0;
@@ -86,6 +108,11 @@ void FindMine(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 				//计算x,y坐标周围有几个雷
 				int count=get_mine_count(mine,x,y);
 				show[x][y] = count + '0';
+				if (show[x][y] == '0')
+				{
+					show[x][y] = ' ';
+					JudgeAround(mine, show, x, y);
+				}
 				DisplayBoard(show, row, col);
 				win++;
 			}
